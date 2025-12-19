@@ -12,6 +12,13 @@ import logging
 #logging config
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename='debug.log', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+stream_handler = logging.StreamHandler(stream=sys.stdout)
+stream_handler.setLevel(logging.DEBUG)
+stream_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+
+logging.getLogger().addHandler(stream_handler)
+
 logger.info('Logging started.')
 
 
@@ -33,12 +40,12 @@ tree = discord.app_commands.CommandTree(bot)
 
 @tree.command(name="ping", description="Replies with Pong!", guild=discord.Object(id=TESTGUILDID))
 async def ping(interaction: discord.Interaction):
-    print('ping command received')
+    logger.debug('ping command received')
     await interaction.response.send_message("Pong!")
 
 @tree.command(name='info', description='このBOTの情報を表示します。', guild=discord.Object(id=TESTGUILDID))
 async def info(interaction: discord.Interaction):
-    print('info command received')
+    logger.debug('info command received')
     embed = discord.Embed(title="OpenTTSBOTv2 v0.1",
                           description="Created by Yuki.",
                           colour=0x474fbd)
@@ -55,8 +62,12 @@ async def info(interaction: discord.Interaction):
 @bot.event
 async def on_ready():
     # global TESTGUILD
-    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
-    print('------')
+    logger.info(f'Logged in as {bot.user} (ID: {bot.user.id})')
+
+    logger.info('Connected to following guilds:')
+    for guild in bot.guilds:
+        logger.info(f'- {guild.name} (ID: {guild.id})')
+
     TESTGUILD = discord.Object(id=TESTGUILDID)
 
     # tree.clear_commands(guild=TESTGUILD)
