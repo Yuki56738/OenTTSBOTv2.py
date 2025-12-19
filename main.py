@@ -35,9 +35,12 @@ async def ping(interaction: discord.Interaction):
 @tree.command(name='info', description='このBOTの情報を表示します。', guild=TESTGUILD)
 async def info(interaction: discord.Interaction):
     print('info command received')
-    embed = discord.Embed(title="OpenTTSBOTv2", description="This is a Discord bot for TTS using OpenTTS.", color=0x00ff00)
-    embed.add_field(name="Version", value="2.0", inline=False)
-    embed.add_field(name="Creator", value="Yuki Ito", inline=False)
+    # embed = discord.Embed(title="OpenTTSBOTv2", description="This is a Discord bot for TTS using OpenTTS.", color=0x00ff00)
+    # embed.add_field(name="Version", value="2.0", inline=False)
+    # embed.add_field(name="Creator", value="Yuki Ito", inline=False)
+    # await interaction.response.send_message(embed=embed)
+    embed = discord.Embed(title='Created by Yuki.', description = 'バージョン: 0.1', color = 0x6fbfd3)
+    embed.set_author(name='OpenTTSBOTv2', url='https://risaton.net')
     await interaction.response.send_message(embed=embed)
 
 
