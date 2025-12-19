@@ -3,6 +3,7 @@ from aiohttp.web_routedef import options
 from discord import *
 import ffmpeg
 import discord.app_commands
+from discord.ext import *
 
 print('OpenTTSBOTv2.py - \nCreated by Yuki Ito')
 print("Bot is initializing...")
@@ -22,17 +23,18 @@ tree = discord.app_commands.CommandTree(bot)
 
 @bot.event
 async def on_ready():
-    await tree.sync()
+    global TESTGUILD
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
     TESTGUILD = discord.Object(id=TESTGUILDID)
+    await tree.sync(guild=TESTGUILD)
 
 @tree.command(name="ping", description="Replies with Pong!")
 async def ping(interaction: discord.Interaction):
     print('ping command received')
     await interaction.response.send_message("Pong!")
 
-@tree.command(name='info', description='このBOTの情報を表示します。', guild=TESTGUILD)
+@tree.command(name='info', description='このBOTの情報を表示します。', guild=discord.Object(id=TESTGUILDID))
 async def info(interaction: discord.Interaction):
     print('info command received')
     # embed = discord.Embed(title="OpenTTSBOTv2", description="This is a Discord bot for TTS using OpenTTS.", color=0x00ff00)
@@ -42,7 +44,6 @@ async def info(interaction: discord.Interaction):
     embed = discord.Embed(title='Created by Yuki.', description = 'バージョン: 0.1', color = 0x6fbfd3)
     embed.set_author(name='OpenTTSBOTv2', url='https://risaton.net')
     await interaction.response.send_message(embed=embed)
-
 
 
 
